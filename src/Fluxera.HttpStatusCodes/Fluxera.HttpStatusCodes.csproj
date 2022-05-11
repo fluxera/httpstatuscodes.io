@@ -6,8 +6,16 @@
 		<ImplicitUsings>disable</ImplicitUsings>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<Version>1.1.0</Version>
+		<Company>Fluxera Software Development GmbH</Company>
+		<Product>httpstatuscodes.io</Product>
+		<Copyright>Copyright © 2022 Fluxera Software Development GmbH. All rights reserved.</Copyright>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Fluxera.Extensions.Hosting.Modules.AspNetCore.Cors" Version="6.0.1" />
+		<PackageReference Include="Fluxera.Extensions.Hosting.Modules.AspNetCore.HttpApi" Version="6.0.1" />
 		<PackageReference Include="Fluxera.Extensions.Hosting.Modules.AspNetCore.RazorPages" Version="6.0.1" />
 		<PackageReference Include="Fluxera.Extensions.Hosting.Modules.Caching" Version="6.0.1" />
 		<PackageReference Include="Fluxera.Extensions.Hosting.Modules.Serilog" Version="6.0.1" />
