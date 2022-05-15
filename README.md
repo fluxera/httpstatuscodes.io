@@ -3,7 +3,13 @@
 [httpstatuscodes.io][5] is an easy to reference database of HTTP Status Codes with their definitions and 
 helpful code references, each code is at `httpstatuscodes.io/{code}`. All standard codes are included, as 
 are some non-standard codes that have significant presence in the wild. A JSON endpoint is available for 
-every cor at `httpstatuscodes.io/{code}.json`.
+every code at `httpstatuscodes.io/{code}.json`.
+
+## Examples
+
+https://httpstatuscodes.io/200
+
+https://httpstatuscodes.io/200.json
 
 ## Development
 
