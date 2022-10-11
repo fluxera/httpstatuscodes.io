@@ -1,7 +1,5 @@
 ﻿namespace Fluxera.HttpStatusCodes
 {
-	using System;
-	using System.IO;
 	using Fluxera.Extensions.Hosting;
 	using Fluxera.Extensions.Hosting.Modules.Serilog;
 	using Microsoft.Extensions.Configuration;
@@ -16,12 +14,6 @@
 		/// <inheritdoc />
 		protected override void ConfigureHostBuilder(IHostBuilder builder)
 		{
-			//// Add OpenTelemetry logging.
-			//builder.AddOpenTelemetryLogging(loggerOptions =>
-			//{
-			//	loggerOptions.AddConsoleExporter();
-			//});
-
 			// Add Serilog logging
 			builder.AddSerilogLogging((context, options) =>
 			{
@@ -36,13 +28,9 @@
 					.Enrich.WithProperty("Application", context.HostingEnvironment.ApplicationName)
 					.Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName);
 
-				string baseDirectory = AppContext.BaseDirectory;
-				string logFilePath = Path.Combine(baseDirectory, "logs", $"{context.HostingEnvironment.ApplicationName}_.log");
-
-				options
-					.WriteTo.Async(x => x.File(logFilePath,
-						rollingInterval: RollingInterval.Day,
-						rollOnFileSizeLimit: true));
+				options.WriteTo.Async(x => x.File(
+					context.HostingEnvironment.GetDefaultLogFilePath(),
+					rollingInterval: RollingInterval.Day));
 
 				if(context.HostingEnvironment.IsDevelopment())
 				{

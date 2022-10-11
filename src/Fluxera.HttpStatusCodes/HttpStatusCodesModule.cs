@@ -49,7 +49,7 @@
 			else
 			{
 				context.UseExceptionHandler("/errors/500");
-				app.UseHsts();
+				context.UseHsts();
 			}
 
 			context.UseStatusCodePagesWithReExecute("/errors/{0}");
