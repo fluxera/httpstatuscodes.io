@@ -58,6 +58,12 @@
 
 			context.UseCors();
 
+			app.Use(async (httpContext, next) =>
+			{
+				httpContext.Response.Headers.Add("Content-Security-Policy", "default-src 'self';");
+				await next();
+			});
+
 			context.UseResponseCaching();
 
 			app.Use(async (httpContext, next) =>
