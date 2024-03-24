@@ -38,7 +38,7 @@
 		/// <inheritdoc />
 		public override void Configure(IApplicationInitializationContext context)
 		{
-			WebApplication app = context.GetApplicationBuilder();
+			IApplicationBuilder app = context.GetApplicationBuilder();
 
 			context.UseHttpsRedirection();
 
@@ -57,12 +57,6 @@
 			context.UseRouting();
 
 			context.UseCors();
-
-			app.Use(async (httpContext, next) =>
-			{
-				httpContext.Response.Headers.Add("Content-Security-Policy", "default-src 'self';");
-				await next();
-			});
 
 			context.UseResponseCaching();
 
