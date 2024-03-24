@@ -28,7 +28,7 @@
 	{
 		public static IApplicationInitializationContext UseMarkdown(this IApplicationInitializationContext context)
 		{
-			WebApplication app = context.GetApplicationBuilder();
+			IApplicationBuilder app = context.GetApplicationBuilder();
 			context.Log("UseMarkdown", _ => app.UseMarkdown());
 
 			return context;
