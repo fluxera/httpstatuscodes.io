@@ -1,5 +1,4 @@
-﻿@page "/{statusCode:int}"
-@model Fluxera.HttpStatusCodes.Pages.StatusCodeModel
+﻿@model StatusCodeModel
 @{
 	ViewData["Title"] = $"{this.Model.PageContent.Code} {this.Model.PageContent.Title}";
 	ViewData["Description"] = $"HTTP Status Code {this.Model.PageContent.Code}: {this.Model.PageContent.Excerpt}";

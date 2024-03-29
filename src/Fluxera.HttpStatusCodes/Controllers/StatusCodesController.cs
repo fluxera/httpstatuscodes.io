@@ -1,15 +1,16 @@
 ﻿namespace Fluxera.HttpStatusCodes.Controllers
 {
-	using System;
-	using System.Linq;
-	using Fluxera.HttpStatusCodes.Model;
-	using Fluxera.HttpStatusCodes.Services;
-	using Microsoft.AspNetCore.Cors;
-	using Microsoft.AspNetCore.Mvc;
-	using Microsoft.AspNetCore.WebUtilities;
+    using System;
+    using System.Linq;
+    using Fluxera.HttpStatusCodes.Model;
+    using Fluxera.HttpStatusCodes.Pages.Shared;
+    using Fluxera.HttpStatusCodes.Services;
+    using Microsoft.AspNetCore.Cors;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.WebUtilities;
 
-	[ApiController]
-	public sealed class StatusCodesController : ControllerBase
+    [ApiController]
+	public sealed class StatusCodesController : Controller
 	{
 		private readonly IStatusCodeModelRepository repository;
 
@@ -18,17 +19,32 @@
 			this.repository = repository;
 		}
 
-		[HttpGet("{statusCode}.json")]
+		[HttpGet("{statusCode:int}")]
+		[ResponseCache(Duration = 60 * 60 * 24, NoStore = false, VaryByQueryKeys = ["statusCode"])]
+		public IActionResult StatusCodeView(int statusCode)
+		{
+			if (!this.repository.ExistsStatusCodePageContent(statusCode))
+			{
+				return this.StatusCode(404);
+			}
+
+			StatusCodePageContent pageContent = this.repository.GetStatusCodePageContent(statusCode);
+			StatusCodeClass statusCodeClass = this.repository.GetStatusCodeClass(pageContent.Set);
+
+			StatusCodeModel model = new StatusCodeModel(pageContent, statusCodeClass);
+
+			return this.View(model);
+		}
+
+		[HttpGet("{statusCode:int}.json")]
 		[EnableCors("Default")]
 		[Produces("application/json", Type = typeof(ProblemDetails))]
-		[ResponseCache(Duration = 60 * 60 * 24, NoStore = false, VaryByQueryKeys = new string[] { "statusCode" })]
-		public IActionResult Get(string statusCode)
+		[ResponseCache(Duration = 60 * 60 * 24, NoStore = false, VaryByQueryKeys = ["statusCode"])]
+		public IActionResult Get(int statusCode)
 		{
 			try
 			{
-				int.TryParse(statusCode, out int httpStatusCode);
-
-				if(!this.repository.ExistsStatusCodePageContent(httpStatusCode))
+				if (!this.repository.ExistsStatusCodePageContent(statusCode))
 				{
 					return this.Problem(
 						statusCode: 404,
@@ -37,12 +53,12 @@
 						instance: $"https://httpstatuscodes.io/{statusCode}.json");
 				}
 
-				StatusCodePageContent content = this.repository.GetStatusCodePageContent(httpStatusCode);
+				StatusCodePageContent content = this.repository.GetStatusCodePageContent(statusCode);
 				StatusCodeClass statusCodeClass = this.repository.GetStatusCodeClass(content.Set);
 
 				return this.Ok(new
 				{
-					location = $"https://httpstatuscodes.io/{httpStatusCode}",
+					location = $"https://httpstatuscodes.io/{statusCode}",
 					statusCode = content.Code,
 					title = content.Title,
 					category = statusCodeClass.Title

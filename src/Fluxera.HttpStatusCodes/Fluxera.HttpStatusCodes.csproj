@@ -7,7 +7,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<Version>2.0.0</Version>
+		<Version>2.0.1</Version>
 		<Company>Fluxera Software Development GmbH</Company>
 		<Product>httpstatuscodes.io</Product>
 		<Copyright>Copyright © 2022-2024 Fluxera Software Development GmbH. All rights reserved.</Copyright>
